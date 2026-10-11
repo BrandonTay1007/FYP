@@ -1,14 +1,44 @@
 # ParaShot — what this project actually is
 
-Cheat sheet from team discussion. Working hub (source of truth for the pitch): [Notion FYP](https://app.notion.com/p/3c83a300c24f806bbbd0ff2cdfabbac7). Local dump: `ParaShot_Pitch_Handover.md`. Official topic text is in that file under **Topic brief**.
+Cheat sheet from team discussion. Working hub: [kickoff notes](https://app.notion.com/p/3cd3a300c24f81ff939bd03c12cf04ce). Local dump: `ParaShot_Pitch_Handover.md`. Official topic text is in that file under **Topic brief**; supervisor kickoff is under **Supervisor kickoff**.
 
 You do not need to become a biologist. This is software: look at a photo of a microscope slide, find blobs that look like parasite eggs, guess the species, let a human fix it, save it as a record.
+
+---
+
+## Pitch (Week 5 draft, Moodle sign-off)
+
+Week 4 studios are done. Topics are assigned and **locked** (no swaps; Moodle setup is complete). Supervisors will mostly **not** email first — we have to chase details. Presentation scheduling is a later post.
+
+**By end of Week 5:** draft pitch deck on Moodle under sign-offs, then **ping our supervisor to sign off**. No sign-off → later presentation is invalid and scores **zero**, even if we present. Slides can keep changing until the actual presentation.
+
+Sign-off is on three things: **scope**, **WSM**, **project goals**. The deck also has to show we understood (1) requirements, (2) goals / objectives / outcomes / deliverables, (3) limitations / scope / constraints, (4) anything else vital below.
+
+Suggested 9-slide flow (adjust if needed; ignore the generic worksheet order):
+
+1. **Introduction**
+2. **Problem / opportunity** — what we solve or explore
+3. **Project overview** — summary of what we will do, tied to (2)
+4. **Analysis of option and recommendation** — WSM with **at least one example** used to pick direction
+5. **Preliminary requirements / objectives** — from supervisor, our decisions, what we plan to use
+6. **Project goals (SMART) / deliverables** — the output at the **end of the whole project** (after Part 2), not just this pitch
+7. **Limitations / scope** — **scope** = what we set as in vs out (achievable vs not); **limitations** = constraints often outside our control. They can overlap.
+8. **Schedule estimate / timeline**
+9. **Conclusions** — what is still pending, needs more investigation
+
+Full assessment + slide copy: `ParaShot_Pitch_Handover.md`.
 
 ---
 
 ## One line
 
 People still find and name parasite eggs by staring at a slide. ParaShot drafts the boxes and species names, lets the user fix them, and saves each photo as a **case** instead of a forgotten glance.
+
+## Collaboration (supervisor, 31 Aug 2026)
+
+Origin: Dr. Sicily (SOIT) × Assoc. Prof. Satoshi Ogawa (JCSMHS) × Dr. Azdayanti (UiT). Her One Health work in Orang Asli villages collects soil and animal stool; many human and animal eggs look the same, which limits diagnosis. That is the **motivation**, not this semester’s labelled task.
+
+**Train on:** Chula-ParasiteEgg-11 (11 species, ICIP 2022) with YOLOv8–v12 or Faster R-CNN. **Optional compare:** AI-KFM 2022 (cattle GINs). **Do not claim** we classify host (human vs animal) this year — public labels are species, not origin.
 
 ---
 
@@ -138,10 +168,11 @@ The long Overview paragraph in the topic card is **what you will build** → **s
 Working slide 2 beats — full text + citations in `ParaShot_Pitch_Handover.md` §5.4 and §5.3b.
 
 1. **Pain:** find eggs *and* name the species by eye; scarce skill; volume/fatigue; no saved record.
-2. **Opportunity:** on-demand detect → species label → human corrects → case log.
-3. **Limit:** screening support, not diagnosis.
+2. **Local hook:** Orang Asli One Health collaboration — many human vs animal eggs look the same (motivation, not this semester’s label).
+3. **Opportunity:** on-demand detect → species label → human corrects → case log.
+4. **Limit:** screening support, not diagnosis, not host-origin classification.
 
-Users/stakeholders (who is at the microscope vs who reads exports) are **not locked** — rest of team still needs to argue student-operator vs lab-tech-operator. Do not block slide 2 on that.
+**Slide 3** is **what you will build** — full bullets + spoken in `ParaShot_Pitch_Handover.md` §5.4b. Users/stakeholders are 3b (§5.5): operator = screening reader (Azdayanti-lab-style); not patients.
 
 ---
 
@@ -157,4 +188,4 @@ Users/stakeholders (who is at the microscope vs who reads exports) are **not loc
 | Export | Record → file |
 | Accuracy summary | Count human vs model disagreement |
 
-Species names are **class labels** in a dataset, like `cat` / `dog`. Dataset, pretrained model, and which species are **supervisor questions**.
+Species names are **class labels** in a dataset, like `cat` / `dog`. Supervisor-locked: train YOLO v8–v12 or Faster R-CNN on **Chula-ParasiteEgg-11** (11 species). **AI-KFM** is comparison only. Still open: fine-tune vs from-scratch, MVP subset vs all 11, FYP accuracy bar.

@@ -2,7 +2,7 @@
 
 > **Purpose of this file:** A complete context handover so another agent (or team member) can continue preparing the mid-semester project pitch deliverable without re-reading all the source PDFs. It captures the unit requirements, the assigned project, and the content drafted so far.
 >
-> **Working hub:** [Notion FYP](https://app.notion.com/p/3c83a300c24f806bbbd0ff2cdfabbac7) (Monash → Y3S1 → FYP). Prefer that for navigation; keep this file as the long-form dump.
+> **Working hub:** [ParaShot FYP — kickoff notes](https://app.notion.com/p/3cd3a300c24f81ff939bd03c12cf04ce) (31 Aug 2026). The previous FYP hub is in Notion trash; unarchive if you need the 9-slide pack. Keep this file as the long-form dump.
 
 ---
 
@@ -21,6 +21,28 @@ ParaShot is an interactive application supporting laboratory screening for paras
 
 - **Deliverable(s) stated in brief:** A working web/mobile app with image upload, detection overlay, and species labels.
 - **Additional requirements:** None stated.
+
+### Supervisor kickoff (Dr. Sicily, team workspace) — 31 Aug 2026
+
+Treat this as **locked direction**, not a new topic. Scope is scalable; the FYP is still a student prototype, not Dr. Azdayanti’s field diagnostic.
+
+**Scope (supervisor wording).** Detection pipeline (object detection for parasite eggs), confidence-threshold control, and a case-management system supporting manual correction, re-analysis, and export. Tasks may include integrating a detection model, designing the case-record schema, building correction UI, and wiring corrections into a running accuracy summary.
+
+**Origin (who the work is for).** Research collaboration: Dr. Sicily (SOIT) × Assoc. Prof. Satoshi Ogawa (Jeffrey Cheah School of Medicine & Health Sciences) × Dr. Azdayanti (UiT; parasitologist, public health in Orang Asli communities). Dr. Azdayanti’s One Health work collects **soil and animal stool** from Orang Asli villages to study environmental/zoonotic transmission. **Key challenge she named:** many parasite eggs from humans and animals are **morphologically indistinguishable**, which limits diagnostic accuracy. They want AI/deep-learning image analysis to **enhance her diagnostic workflow**.
+
+**FYP honesty rule (do not overclaim).** Public training data does **not** label host (human vs animal). Chula-ParasiteEgg-11 is 11 *species* of eggs in faecal smears; AI-KFM is cattle GINs. This semester we draft **where** eggs are and **which species they look like**, with a human correcting. We do **not** claim we will tell human-origin from animal-origin eggs. That collaboration problem is the *motivation* (slide 2); the *product* (slide 3) is the screening-support app on public data.
+
+**Datasets (supervisor-named; search for more is allowed).**
+
+1. **Chula-ParasiteEgg-11** — primary. 11-class parasite-egg microscopy set from the ICIP 2022 challenge. ~13,750 images; bounding-box labels; train ~1,000 images/class. IEEE Dataport DOI: [10.21227/vyh8-4h71](https://dx.doi.org/10.21227/vyh8-4h71). Classes: *Ascaris lumbricoides, Capillaria philippinensis, Enterobius vermicularis, Fasciolopsis buski, Hookworm egg, Hymenolepis diminuta, Hymenolepis nana, Opisthorchis viverrini, Paragonimus* spp., *Taenia* spp., *Trichuris trichiura*.
+2. **AI-KFM 2022** — supplementary/comparison. Cattle faecal microscopy (GIN eggs; varying concentration/contamination). Kaggle; described in Capuozzo et al. (2024).
+
+**Model (supervisor-named).** Train a standard object detector on Chula-ParasiteEgg-11 first (most established public set with a challenge): YOLOv8–v12 ([yolov12.com](https://yolov12.com/); [Ultralytics docs](https://docs.ultralytics.com/)) or Faster R-CNN.
+
+**Papers they pointed at (add to §5.3b).**
+
+1. Anantrasirichai, N., Chalidabhongse, T. H., Palasuwan, D., Naruenatthanaset, K., Kobchaisawat, T., Nunthanasup, N., Boonpeng, K., Ma, X., & Achim, A. (2022). ICIP 2022 challenge on parasitic egg detection and classification in microscopic images: Dataset, methods and results. *IEEE ICIP*. https://doi.org/10.1109/icip46576.2022.9897267 (arXiv: [2208.06063](https://arxiv.org/abs/2208.06063))
+2. Capuozzo, S., Marrone, S., Gravina, M., Cringoli, G., Rinaldi, L., Maurelli, M. P., … Sansone, C. (2024). Automating parasite egg detection: insights from the first AI-KFM challenge. *Frontiers in Artificial Intelligence*. https://doi.org/10.3389/frai.2024.1325219
 
 ---
 
@@ -185,8 +207,8 @@ GenAI is permitted for producing **visual materials** (mock-ups, look-and-feel, 
 
 ### 5.3 Project Goals (SMART)
 
-- **G1:** Build a working web app that detects parasite eggs in uploaded microscopy images and displays bounding boxes with species labels, achieving a defined baseline detection accuracy (e.g. ≥70% precision or F1 on a held-out test set) by end of semester.
-  - *Why 70% is SMART, not random:* Published detectors on Kato-Katz images report much higher in-distribution scores (Ward et al., 2022: weighted precision 94.9% / recall 96.1%; Oyibo et al., 2025: weighted precision 95.9% / F-score 94.0%). A ≥70% FYP baseline is **conservative and achievable** with a pretrained/fine-tuned model and a small test set. We are not claiming clinical SOTA. Mohammed et al. (2025) also show performance can drop out-of-distribution (different camera, unseen species) — so a modest target plus human correction (G3) is the honest FYP design.
+- **G1:** Build a working web app that detects parasite eggs in uploaded microscopy images and displays bounding boxes with species labels, achieving a defined baseline detection accuracy (e.g. ≥70% precision or F1 on a held-out **Chula-ParasiteEgg-11** test split) by end of semester.
+  - *Why 70% is SMART, not random:* ICIP 2022 challenge methods on this same dataset are the right comparison class (Anantrasirichai et al., 2022). Kato-Katz detectors also report high in-distribution scores (Ward et al., 2022; Oyibo et al., 2025). A ≥70% FYP baseline is **conservative**. We are not claiming clinical SOTA, and we are not evaluating on Orang Asli field images unless those are provided.
 - **G2:** Implement a case-management system that stores each analysis as a reviewable case record with a personal history log, supporting create, view, and export of individual case reports.
   - *Why this goal:* Manual microscopy is typically a one-shot readout with no structured record of what was seen or corrected (the gap in §5.4). Field AI-pathology prototypes explicitly pair detection with **verification and reporting**, not boxes alone (Ward et al., 2022). ParaShot is the student-scale version: one image → one case → export.
 - **G3:** Provide an interactive correction workflow allowing users to adjust the confidence threshold, correct mislabelled detections, and re-run analysis, with corrections updating a running accuracy summary.
@@ -206,7 +228,9 @@ Each is Specific, Measurable, Achievable, Relevant, Time-bound. Put **2–3 cita
 |---|---|
 | Egg ID is still done by microscopy; WHO still treats Kato-Katz as the programmatic standard for soil-transmitted helminths | Stuyver & Levecke (2021) |
 | Reading the slide is slow and needs scarce expertise; results vary with the reader | Mohammed et al. (2025) — slide exam ≈ 80% of time-to-result, needs expertise; Keller et al. (2020) — readings depend on skill; expertise increasingly rare |
-| Opportunity: detectors can draft boxes + species labels, with a human still checking | Ward et al. (2022); Oyibo et al. (2025) |
+| Opportunity: detectors can draft boxes + species labels, with a human still checking | Ward et al. (2022); Oyibo et al. (2025); Anantrasirichai et al. (2022) on Chula-ParasiteEgg-11 |
+| Local collaboration motivation (Orang Asli One Health; human vs animal eggs look the same) | Supervisor kickoff 31 Aug 2026 (Dr. Sicily / Ogawa / Azdayanti) — **not** a labelled FYP task |
+| What we actually train/compare on | Anantrasirichai et al. (2022) Chula-ParasiteEgg-11; Capuozzo et al. (2024) AI-KFM |
 | We are not a diagnostic device | Same papers frame AI as *support* for screening/control programmes, plus our out-of-scope clinical validation |
 
 **References (copy onto a tiny slide-6 footer or backup slide)**
@@ -216,12 +240,16 @@ Each is Specific, Measurable, Achievable, Relevant, Time-bound. Put **2–3 cita
 3. Ward, P., Dahlberg, P., Lagatie, O., Larsson, J., Tynong, A., Vlaminck, J., … Stuyver, L. J. (2022). Affordable artificial intelligence-based digital pathology… Kato-Katz stool thick smears. *PLOS Neglected Tropical Diseases, 16*(6), e0010500. https://doi.org/10.1371/journal.pntd.0010500
 4. Mohammed, M. A., Anzaku, E. T., Ward, P. K., Levecke, B., Krishnamoorthy, J., De Neve, W., et al. (2025). Detecting soil-transmitted helminth and *Schistosoma mansoni* eggs… YOLOv7 variants. *PLOS Neglected Tropical Diseases, 19*(7), e0013234. https://doi.org/10.1371/journal.pntd.0013234
 5. Oyibo, P., Meulah, B., Oyibo, W., Diehl, J.-C., Agbana, T., van Lieshout, L., & Vdovin, G. (2025). Deep learning-based automated detection and multiclass classification of soil-transmitted helminths and *Schistosoma mansoni* eggs in fecal smear images. *Scientific Reports*. https://doi.org/10.1038/s41598-025-02755-9
+6. Anantrasirichai, N., Chalidabhongse, T. H., Palasuwan, D., et al. (2022). ICIP 2022 challenge on parasitic egg detection and classification… *IEEE ICIP*. https://doi.org/10.1109/icip46576.2022.9897267 — **Chula-ParasiteEgg-11** (supervisor-named primary dataset)
+7. Capuozzo, S., Marrone, S., Gravina, M., et al. (2024). Automating parasite egg detection: insights from the first AI-KFM challenge. *Frontiers in AI*. https://doi.org/10.3389/frai.2024.1325219 — **AI-KFM** (supervisor-named supplementary set)
 
-**Honest limits (say if asked).** These papers are about Kato-Katz / STH control programmes, often in endemic settings. ParaShot is an FYP screening-support prototype (one uploaded photo, not a field whole-slide scanner). Cite them for *why the problem exists* and *why detect+correct is plausible*, not as proof that we will hit 95% in a Malaysian teaching lab.
+**Honest limits (say if asked).** Papers 1–5 are Kato-Katz / STH control programmes. Papers 6–7 are the datasets we will actually train/compare on. ParaShot is an FYP screening-support prototype (one uploaded photo, not a field scanner, not host-origin classification). Cite them for *why the problem exists*, *why detect+correct is plausible*, and *what data we use* — not as proof we will hit 95% on Orang Asli field samples.
 
 ### 5.4 Problem / Opportunity statement (slide 2)
 
 **Problem.** Identifying parasite eggs in microscope images is still done largely by eye. A reader must both *find* eggs on a cluttered slide and *name* the species from shape. WHO still treats Kato-Katz microscopy as the programmatic standard for soil-transmitted helminths (Stuyver & Levecke, 2021). That work depends on scarce skill, slows as volume or fatigue rises, and readings vary with the reader (Keller et al., 2020; Mohammed et al., 2025). Each screen is usually a one-shot judgement — nothing structured is kept about what was seen, missed, or corrected.
+
+**Local hook (supervisor, 31 Aug 2026 — use on slide 2, not as an FYP claim).** This topic sits in a SOIT × JCSMHS × UiT collaboration. Dr. Azdayanti’s One Health work in Orang Asli villages collects soil and animal stool; many human and animal eggs look the same under the microscope, which limits diagnostic accuracy. That is *why the collaboration wants an image-analysis tool*. It is **not** this semester’s labelled task.
 
 **Opportunity.** Object-detection models can already draft boxes and species labels on Kato-Katz images at high in-distribution accuracy (Ward et al., 2022; Oyibo et al., 2025), but published systems still pair AI with **human verification**, not fully automatic diagnosis. ParaShot explores that human-in-the-loop alternative at FYP scale: upload one microscopy photo, run detection on demand, set a single confidence threshold, and get proposed bounding boxes plus species labels. The user can correct mistakes. Each analysis is saved as a **case** in a personal history log, so the image becomes a reviewable record rather than a discarded glance.
 
@@ -229,17 +257,59 @@ Each is Specific, Measurable, Achievable, Relevant, Time-bound. Put **2–3 cita
 
 **Slide bullets (3–5, for sign-off):**
 - By eye today: find eggs *and* name the species; scarce skill; slower with volume and fatigue (Keller et al., 2020; Mohammed et al., 2025)
+- Local hook: Orang Asli One Health work — many human vs animal eggs look the same (collaboration motivation, not this semester’s label)
 - No saved record — each screen is a one-shot judgement
-- Opportunity: on-demand detect → proposed species label → human corrects → case log (Ward et al., 2022)
-- One photo = one case (not a one-shot demo that disappears)
-- Screening support, not diagnosis
+- Opportunity: on-demand detect → proposed species label → human corrects → case log (Ward et al., 2022; Anantrasirichai et al., 2022)
+- Screening support, not diagnosis; not host-origin classification
 
 **Spoken (~45s):**
-“Egg ID on microscope images is still mostly done by eye. You have to find the eggs and name the species from shape. The literature on Kato-Katz screening is clear that this needs scarce skill and that reading the slide is the slow, expert step. We’re exploring a human-in-the-loop alternative: upload one photo, run detection on demand, set a confidence threshold, get boxes and species labels, correct mistakes, and save that as a case. Support for screening — not a diagnostic device.”
+“Egg ID on microscope images is still mostly done by eye: find the eggs and name the species from shape. That is slow, skill-scarce, and usually leaves no record. This topic comes from a SOIT–JCSMHS–UiT collaboration: Dr. Azdayanti’s One Health work in Orang Asli villages, where many human and animal eggs look the same. We are not classifying host origin this semester. We are building screening support: upload one photo, draft boxes and species labels, a human checks, save it as a case — not a diagnostic device.”
 
 Keep flags, re-run, accuracy summary, and export off this slide — they belong on slide 3.
 
-### 5.4b Business case (informative, per original worksheet — maps into supervisor slides 2–5)
+### 5.4b Project overview (slide 3a) — what is needed
+
+Supervisor definition: *a general summary of what the project does, in reference to slide 2.* The topic-card Overview paragraph is the source. Users/stakeholders are **3b** on the same slide (see §5.5).
+
+**This slide is the product, not the pain.** Answer: upload a microscopy photo → on-demand detection → boxes + species labels → human check → saved **case**.
+
+**Must cover (supervisor kickoff, 31 Aug 2026 — locked):**
+
+- Detection pipeline (object detector for parasite eggs; train YOLO v8–v12 or Faster R-CNN on Chula-ParasiteEgg-11)
+- One **confidence threshold** for the whole run
+- **Correction** of wrong labels and **flag** uncertain detections
+- Optional **re-run** of the *same* photo with a new threshold (same case)
+- **Personal history log** (each analysis becomes a case)
+- **Export** of a case report
+- **Accuracy summary** from corrections (human vs model)
+
+**Workflow on-slide:** `Upload → threshold → run → overlay → correct/flag → re-run if needed → save case → export`
+
+**Positioning (one clause):** screening **support**, not diagnosis. Full out-of-scope stays on slide 7. **Do not claim** human-vs-animal / host-origin classification — public labels are species, not origin.
+
+**On-slide bullets (3–5, for sign-off):**
+- One photo in → boxes + species labels → human confirms → saved as a case
+- One confidence threshold; on-demand detect (not live video)
+- Correct / flag, optional re-run of the same photo, history log, export, accuracy summary
+- Train YOLO (or Faster R-CNN) on Chula-ParasiteEgg-11; AI-KFM is comparison only
+- Screening support, not a diagnostic device; not host-origin classification
+
+**Spoken (~45s):**
+“ParaShot is what we build for that problem. You upload one microscopy photo, set a confidence threshold, and run detection on demand. The model drafts boxes and species labels. You correct mistakes, flag uncertain ones, optionally re-run the same photo with a different threshold, and save that as a case you can export. Corrections feed a running accuracy summary. We train a standard detector on the public Chula-ParasiteEgg-11 set. Screening support — not diagnosis, and not telling human eggs from animal eggs.”
+
+**Leave off this slide:**
+
+| Belongs on | Leave off slide 3 |
+|---|---|
+| Slide 2 | Why the problem exists; Orang Asli / morphology hook; literature citations |
+| Slide 4 | WSM / option analysis |
+| Slide 5 | Requirements list (the overview is the product story; requirements are the contract) |
+| Slide 6 | SMART goals, deliverables, research citations |
+| Slide 7 | Full in/out of scope and limitations |
+
+**Rubric hook.** Pitch content (30%) wants the **project definition** connected to the business case. Slide 3 is that definition. HD needs it project-specific — not a generic “AI image app.”
+
+### 5.4c Business case (informative, per original worksheet — maps into supervisor slides 2–5)
 
 - **Introduction / Background:** Manual microscopy screening for parasite eggs is slow, expertise-dependent, and prone to inconsistency and fatigue-based error; labs face high sample volumes with limited specialist staff.
 - **Business Objective:** Assist screening readers by drafting egg detection and species labels — speeding the first pass while keeping a human in the loop for correction and final judgement.
@@ -253,20 +323,21 @@ Keep flags, re-run, accuracy summary, and export off this slide — they belong 
 
 ### 5.5 Users / stakeholders (slide 3b)
 
-**Working default for the pitch** (team can still swap “lab tech” vs “trainee” as the operator — do not list both as equal primaries).
+**Working default for the pitch** (operator = screening reader in an Azdayanti-lab-style workflow; still lock lab-tech vs trainee vs student-proxy wording).
 
-**Primary user (operator):** a **screening reader** — lab technician or trainee — who looks at a microscopy photo of a parasite-egg slide. Job: find eggs, name the species, keep a record. They upload, set the threshold, run detection, correct/flag, re-run, save the case, export.
+**Primary user (operator):** a **screening reader** — in this collaboration, closest to Dr. Azdayanti’s lab team (or a student/tech running the same workflow). Job: find eggs, name the species, keep a record. They upload, set the threshold, run detection, correct/flag, re-run, save the case, export.
 
 **Secondary users / stakeholders (they care; they are not at the slider):**
-- Lab supervisor / lecturer — quality of screening, corrections, exported reports, accuracy summary
-- Project supervisor + unit — academic FYP stakeholders (scope, deliverable, marks)
-- **Not users:** patients and clinical decision-makers — screening *support*, not diagnosis
+- Domain collaborators: Dr. Azdayanti (UiT / parasitology) and Assoc. Prof. Satoshi Ogawa (JCSMHS) — workflow quality, whether drafts are usable on their kind of images later
+- Lab supervisor / lecturer — corrections, exported reports, accuracy summary
+- Project supervisor (Dr. Sicily) + unit — academic FYP stakeholders (scope, deliverable, marks)
+- **Not users:** patients, Orang Asli community members as app users, or clinical decision-makers — screening *support*, not diagnosis, not a field deployment this semester
 
 **On-slide (3–5 bullets):**
-- Operator: screening reader (tech or trainee) — upload → detect → correct → log
-- Stakeholder: supervisor/lecturer — history, reports, accuracy
-- Academic stakeholders: FYP supervisor and unit
-- Not in scope: patient / diagnostic user
+- Operator: screening reader (Azdayanti-lab-style workflow) — upload → detect → correct → log
+- Domain stakeholders: Dr. Azdayanti + Assoc. Prof. Ogawa
+- Academic: Dr. Sicily and the unit
+- Not in scope: patient / diagnostic / community-facing user
 
 **Spoken (~30s):**
 “The person using the app is whoever is reading the slide. They get a draft of *where* the eggs are and *what species they look like*, then they confirm. A supervisor might open the history or an exported report. We are not building a tool for the patient or for an official diagnosis.”
@@ -323,18 +394,97 @@ Functional slices for role assignment (individual or pairs on harder pieces):
 
 Adjust to balance time evenly and match each member's owned work area.
 
+
+
+### 5.9 Conclusions (slide 9) — what the project still has to figure out
+
+Close on **ParaShot**. Recap the locked product, then the open investigations that change the detector, the case loop, or the data we can honestly claim.
+
+**Product, locked:** one microscopy photo → on-demand detector → boxes + species labels → human corrects/flags → optional re-run of the *same* photo → saved case → export. Train YOLO v8–v12 or Faster R-CNN on Chula-ParasiteEgg-11. AI-KFM is comparison only. Screening support, not a diagnostic device, not host-origin classification.
+
+---
+
+**Still open — detection pipeline**
+
+| What we still need to investigate | Why it matters | Working default |
+|---|---|---|
+| Fine-tune a COCO-pretrained detector vs train from scratch | Compute, time, and whether we ever get a usable overlay | Fine-tune |
+| Which detector: YOLOv8 vs later YOLO vs Faster R-CNN | Speed vs accuracy trade-off on microscopy; YOLO is the usual first try | Start YOLOv8 or v11; compare only if the first model is weak |
+| All 11 Chula classes vs a smaller first set | Day-one overlay completeness vs a pipeline that actually trains | All 11 if training holds; otherwise a documented subset |
+| Default confidence threshold, and whether it is remembered per case | The slider is the user’s main control; a bad default makes the first run look empty or noisy | Start ~0.25–0.5; store the value used on the case |
+| Backend inference vs in-browser; CPU vs GPU; “reasonable” latency for one photo | A lab reader waiting on a laptop is a different system than a Colab notebook | Backend; CPU acceptable; target seconds-not-minutes per image |
+| Input constraints (file type, resolution, one field-of-view vs a stitched slide) | Chula images are already cropped microscopy stills, not a whole-slide scanner | One uploaded still; common image types; no WSI / stitching |
+
+**Still open — data and how we measure “good”**
+
+| What we still need to investigate | Why it matters | Working default |
+|---|---|---|
+| Evaluation protocol on Chula (split, metric: mAP vs F1 vs precision/recall at the operating threshold) | We need a number we can defend; ICIP SOTA is the wrong bar | Held-out Chula test split; report F1 *and* that it is in-distribution |
+| What “≥70%” actually means until we have a first training run | Placeholder, not a clinical target | Conservative bar on Chula; revise after the first val curve |
+| What AI-KFM is *for* (cattle GIN eggs; different host, different classes) | Supervisor named it as supplementary/comparison — not a second product | Optional stress/comparison set; do not mix labels into the 11-class head |
+| Search for further public sets (allowed) | More data may help, or may be the wrong magnification/stain | Chula first; add a set only if boxes + species labels exist |
+| Any of Dr. Azdayanti’s soil / animal-stool images this year | Chula is faecal smears from a challenge. Her images are a different distribution (debris, host, preparation). That is the collaboration’s real hardness | Do not assume we get them. If we do: qualitative demo only; no retrain unless they are labelled |
+| Domain gap vs the Orang Asli / One Health motivation | Public labels are species, not human-vs-animal origin; morphology overlap is why the collaboration exists | Stay honest: we draft *looks like species X*; host-origin is future / not this dataset |
+
+**Still open — correction, re-run, and what a case actually stores**
+
+The brief names the loop; it does not specify the semantics. These are the product holes.
+
+| What we still need to investigate | Why it matters | Working default |
+|---|---|---|
+| Wrong *species* on an existing box | Core correction | Dropdown of the 11 classes (or current class set) |
+| False positive (dirt, bubble, junk box) | Reader must be able to reject a draft | Delete / dismiss the box; count as disagreement |
+| False negative (egg the model missed) | Brief says “correct mislabelled detections” — not clearly “draw a missed egg” | Allow add-a-box if we can do it cleanly; otherwise flag the *image* as incomplete |
+| Uncertain **flag** (and optional note) | Separate from a hard correction | Persist on the box; does not require a re-run |
+| Re-run after moving the threshold | New boxes vs the human’s existing edits | Re-run replaces the *model* overlay; keep flags/corrections that still match a box, or store the previous run as history on the same case |
+| What the **accuracy summary** counts | Must not be sold as diagnostic accuracy | Human-vs-model disagreement: label changes, deletions, flags; per-case + running tally. Not clinical PPV, not host-origin |
+| Case schema: image, threshold, boxes, corrections, flags, re-runs, export snapshot | “Case management” is empty without this | One case = one photo; re-runs are versions on that case; export the latest reviewed state |
+| What an exported **case report** contains, and in what file | A screenshot is not a record | Image + threshold + boxes/labels/scores + corrections/flags + timestamp; PDF for a human, CSV/JSON for the boxes |
+
+**Still open — who uses it, on what surface**
+
+| What we still need to investigate | Why it matters | Working default |
+|---|---|---|
+| Operator wording: lab tech vs trainee vs student running the same workflow | Changes UI copy and how “expert correction” is framed | Screening reader in an Azdayanti-lab-style workflow |
+| Web vs mobile | Bench microscope + PC vs a phone in a village — we are not a field deployment this year | Web first; responsive layout if cheap |
+| Logged-in personal history vs a single-operator session | “Personal history log” can mean auth, or just this browser’s cases | Session is enough for a prototype; auth only if we need two named users |
+| Who walks upload → detect → review → correct → export before we call the UI done | Usability is a product claim, not a screenshot | Team, plus a screening reader if we can get one |
+
+**Not pending — already decided, do not reopen on this slide:** live video, batch processing, LIS/LIMS, clinical validation, treating patients, classifying human vs animal origin, training on unlabelled field photos as if they were Chula.
+
+**Next on the project:** train on Chula, freeze a case schema, wire detect → correct/flag → re-run → export, then use a first val run and any collaborator images (if they appear) to settle the open rows above.
+
+---
+
+**On-slide bullets** (clusters; tables above for detail):
+
+- ParaShot: one photo → draft boxes + species → human checks → saved case. Not diagnosis, not host-origin
+- Detector still open: fine-tune vs scratch, which YOLO/Faster R-CNN, 11 classes vs a first subset, operating threshold, backend latency
+- Data still open: Chula metric and split; what AI-KFM is for; any Azdayanti images this year (assume public data; qualitative only if they arrive)
+- Case loop still open: delete junk boxes, add missed eggs, what a re-run does to edits, what the accuracy summary actually counts, what a report contains
+- Surface still open: web vs mobile, session vs login, who the screening reader is
+- Next: train on Chula, freeze the case record, wire the loop, let the first val run and any collaborator images answer the rest
+
+**Spoken (~45s):**
+“ParaShot is the screening-support loop: one photo, draft boxes and species, a human checks, save it as a case. We train on public Chula data — not diagnosis, and not telling human eggs from animal eggs. What we still have to work out is the detector itself: fine-tune versus from scratch, which model, all eleven species versus a smaller first set, and a realistic bar on a Chula hold-out. We also have not nailed the case semantics: can the reader delete junk boxes and add a missed egg, what a re-run does to their edits, what the accuracy summary counts — disagreement with the model, not a medical result — and what an exported case actually contains. We do not yet know if we will see any of Dr. Azdayanti’s soil or stool images this year; until then we stay on public data, and AI-KFM stays a comparison set. Next we train, freeze what a case stores, wire the loop, and let those results settle the rest.”
+
+**If asked.** Give the working default and why. Do not promise field images, host-origin labels, or a clinical accuracy number.
+
+**Leave off this slide:** problem story (2), product walkthrough (3), SMART wording (6), the full in/out-of-scope *list* (7) — point at the investigations instead.
+
 ---
 
 
 
 ## 6. Questions to ask the supervisor (still open / to confirm)
 
-**Detection model & data**
+**Detection model & data** *(partly answered 31 Aug 2026)*
 
-- Train our own model or use/fine-tune a pre-trained one (e.g. YOLOv8)?
-- Specific dataset provided, or source our own microscopy images?
-- Which parasite species must be supported — minimum set or team-defined?
-- Reasonable baseline accuracy target at this stage?
+- ~~Train our own model or use/fine-tune a pre-trained one (e.g. YOLOv8)?~~ → Train a standard detector (YOLOv8–v12 or Faster R-CNN) on Chula-ParasiteEgg-11. Still confirm: from-scratch vs COCO-pretrained fine-tune (almost certainly fine-tune).
+- ~~Specific dataset provided, or source our own microscopy images?~~ → Public sets named: Chula-ParasiteEgg-11 (primary), AI-KFM (supplementary). No Orang Asli field set promised for this semester.
+- ~~Which parasite species must be supported — minimum set or team-defined?~~ → The 11 Chula classes (see §1 kickoff). Confirm whether a subset is acceptable for MVP.
+- Reasonable baseline accuracy target at this stage? **Still open** (ICIP 2022 challenge numbers exist — can cite, but set a conservative FYP bar).
+- Will we get any of Dr. Azdayanti’s images for a *qualitative* demo, or public data only? **Still open — do not assume.**
 
 **Scope & deliverable**
 
@@ -361,10 +511,10 @@ Adjust to balance time evenly and match each member's owned work area.
 
 ## 7. Outstanding TODOs for the next agent / team
 
-- [ ] **Users / stakeholders:** §5.5 is now a slide-ready default (screening reader + supervisor). Team still lock operator = lab tech vs trainee before the deck is final.
-- [ ] Confirm the open supervisor questions in Section 6 (especially web-vs-mobile, dataset, species set, tech stack) — several scope decisions depend on these.
+- [ ] **Users / stakeholders:** §5.5 default is screening reader in an Azdayanti-lab-style workflow. Team still lock wording (lab tech vs trainee vs student proxy) before the deck is final.
+- [ ] Confirm remaining supervisor questions in Section 6 (web-vs-mobile, tech stack, FYP accuracy bar, any field images, export format, auth). Dataset + 11 Chula classes + YOLO/Faster R-CNN are locked.
 - [ ] Replace WSM example alternatives + scores with the team's real considered options and agreed reasoning.
-- [x] Add cited background research to justify SMART goals and problem statement — see **§5.3b** (five papers). Still put 2–3 of them on slides 2/6; do not overclaim we are a field diagnostic device.
+- [x] Add cited background research — see **§5.3b** (seven papers, including supervisor-named Chula + AI-KFM). Still put 2–3 of them on slides 2/6; do not overclaim we are a field diagnostic device or host-origin classifier.
 - [ ] Fill in real team member names + IDs (as per Allocate+) and finalise the speaker split; map §5.7 work slices to named presenters.
 - [ ] Build the actual 9-slide draft deck once content is locked (put presenter name on every slide they speak to; add 3–5 plain-text bullets per content slide for the draft sign-off requirement).
 - [ ] Upload draft deck to Moodle under sign-offs and ping supervisor for sign-off BEFORE the presentation session.
@@ -383,4 +533,5 @@ Adjust to balance time evenly and match each member's owned work area.
 - Meeting minutes template (fit316x-meeting-minutes-template.docx)
 - ParaShot topic brief (topic #44, image)
 - Supervisor's Week 4 Moodle post specifying the 9-slide flow and sign-off process
+- Supervisor team-workspace kickoff (Dr. Sicily, 31 Aug 2026) — collaboration, scope, datasets, model, papers
 
