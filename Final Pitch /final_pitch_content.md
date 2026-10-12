@@ -20,7 +20,7 @@ Legend: **AGREED** = confirmed by user/team/supervisor. **PROPOSED** = agent sug
 
 
 
-## 1. Teaching-team rulings (Ed, Soo Wooi King, 29 Sep to 11 Oct)
+## 1. Teaching-team rulings (Ed, Soo Wooi King, 29 Sep to 12 Oct)
 
 - Content follows the nine-item MUM flow. Not all items must be present.
 - Project plan: Gantt OR RTM, whichever is easier to explain. Gantt preferred, fits one slide. WBS optional. Unchanged Gantt can be repeated and stated as such.
@@ -33,9 +33,10 @@ Legend: **AGREED** = confirmed by user/team/supervisor. **PROPOSED** = agent sug
 - Frameworks/architecture: may name a few proposed ones, no deep detail.
 - Roles mapping to members: optional.
 - Changes since mid-sem: may be highlighted to save time.
-- Risk: all risks the project could encounter. Risk register optional. Simple high/medium/low scoring is fine; no formal probability maths.
+- Mid-sem reference (12 Oct): optional. This pitch is a follow-up, so you may point back, but the panel may not remember what was said. Anything the rubric scores has to be restated on the slide.
+- Risk: all risks the project could encounter, internal or external (#293, 9 Oct). On the slide, name the top 3 and say they are the top 3 of the full set (11 Oct). Impact and mitigation are still the required shape; staff did not add a third topic. Risk register optional. Simple high/medium/low scoring is fine; no formal probability maths.
 - Conclusion: reflection on progress thus far, teamwork and PM.
-- SMART goals: question asked 11 Oct, unanswered.
+- SMART goals (11 Oct): optional. "Depends on how you view them and how you want to present them." Not required and not forbidden.
 
 
 
@@ -59,7 +60,7 @@ Early Oct meeting (Notion "Supervisor questions", user-confirmed):
 - CPU fine for single image, GPU better for batch. Colab for training. Ensemble valid but costly.
 - Risks must be realistic with mitigations (client miscommunication, scope change, methodology change). Justified changes not penalised.
 
-Meeting 4 team decisions (9 Oct): single-image detection baseline, multi-species stretch. Web app first, mobile only if early. Standardise to one image format, resize required. Colab for now, compare Hugging Face by 22 Oct. Research storage and propose a minimum batch baseline by 22 Oct. Per-feature checklist before implementation.
+Meeting 4 team decisions (9 Oct): single-image detection baseline, multi-species stretch. (12 Oct research note: detectors output a class per box, so multi-species is already produced; the real stretch is a separately validated mixed-image accuracy figure. See 5.4 FR3 and 5.5 wording.) Web app first, mobile only if early. Standardise to one image format, resize required. Colab for now, compare Hugging Face by 22 Oct. Research storage and propose a minimum batch baseline by 22 Oct. Per-feature checklist before implementation.
 
 User confirmations 11 Oct: batch upload and junior/senior roles are IN scope. No model results yet (cite papers). No tech stack chosen. RTM not signed off (no MUM RTM sign-off exists).
 
@@ -99,6 +100,7 @@ Target timing (PROPOSED): roughly 14 min = intro 0:45, problem/overview 1:30, us
 - Title slide: project name, PCS-33, topic 44, five names and IDs.
 - Team introduction slide reused from mid-sem (Meeting 2 fix: give context before diving in).
 - One sentence: ParaShot turns a microscope photo into a reviewed, exportable case.
+- Do not assume the panel remembers the mid-sem deck (staff, 12 Oct). A one-line "what changed" is enough acknowledgement. Requirements, plan, wireframes and risks still have to stand on their own.
 
 
 
@@ -109,7 +111,7 @@ PROPOSED additions:
 
 - Field reality: a field trip returns hundreds of images; the expert is the review bottleneck.
 - What it solves: drafts boxes and species so the expert reviews rather than searches; every image becomes a case; a batch gets one report.
-- Overview workflow: upload batch -> standardise images -> detect (one species per image) -> senior review and correct -> save cases -> batch report.
+- Overview workflow: upload batch -> standardise images -> detect (box, species and confidence for every egg) -> senior review and correct -> save cases -> batch report.
 - Deliverables: web app, trained detector on Chula-ParasiteEgg-11, case database, batch report.
 - OPEN: include a short "changed since mid-sem" panel (batch, roles, report as headline)? Own slide or panel.
 - Positioning clause: screening support, not diagnosis, not host-origin classification.
@@ -133,7 +135,7 @@ Draft functional requirements (PROPOSED, owners follow Meeting 4 roles):
 | --- | ---------------------------------------------------------------------------- | ----------------------------- | ------------------------------ |
 | FR1 | Upload one or many microscopy images (PNG, TIFF, JPEG) up to a batch cap     | Full-stack (Zhi Hong, Joshua) | Changed: batch added           |
 | FR2 | Convert and resize uploads to one standard format, verified for no data loss | Full-stack + Brandon          | New (supervisor)               |
-| FR3 | Detect eggs: boxes, one species label per image, confidence                  | AI (Yu Hong, Victor)          | Changed: one species per image |
+| FR3 | Detect every egg in the image: bounding box, species label and confidence per egg | AI (Yu Hong, Victor)          | Reworded: per-egg species (detectors are per-box multi-class by nature); mixed-image accuracy not separately validated in Sem 1 |
 | FR4 | Adjustable confidence threshold with re-run on the same image                | AI + Full-stack               | Unchanged                      |
 | FR5 | Senior can relabel, delete a box, flag uncertain, add note                   | Full-stack                    | Unchanged, now senior-only     |
 | FR6 | Login with junior and senior roles; cases owned by uploader                  | Full-stack                    | New (supervisor)               |
@@ -144,23 +146,23 @@ Draft functional requirements (PROPOSED, owners follow Meeting 4 roles):
 
 Draft non-functional (PROPOSED):
 
-- NFR1 detection quality on a held-out Chula split, single model, no ensemble: mAP@0.5 >= 0.90 and F1 >= 0.90 (stretch 0.95). Field-image performance is not this semester's target (Heliyon 2024: F1 0.88 → 0.53 out of domain).
+- NFR1 detection quality on a held-out Chula split, single model, no ensemble: mAP@0.5 >= 0.90 and F1 >= 0.90 (stretch 0.95), reported per class. The standard Chula test split already contains mixed-species images; a separately curated mixed-image subset is a stretch. Field-image performance is not this semester's target (Heliyon 2024: F1 0.88 → 0.53 out of domain).
 - NFR2 batch processing within a stated time per image on CPU; GPU optional.
 - NFR3 role security: juniors cannot change labels or access admin functions.
 - NFR4 conversion lossless, or loss measured and reported.
 - NFR5 a senior can review one image without training.
 
-Goals: SMART unanswered on Ed. PROPOSED: fold revised goals into this slide as a short goals line (target and dates), expand only in Q&A. OPEN: separate goals slide instead?
+Goals: staff 11 Oct, optional. PROPOSED: one goals line on this slide (target and date), detail only in Q&A. No separate SMART slide.
 
 Deliberately left out (OPEN to re-add): lowest-confidence-first review queue (agent idea, not supervisor's); senior drawing boxes for missed eggs (never raised with supervisor); manager tier (parked).
 
 OPEN: batch cap number, or "to be set after storage research due 22 Oct".
-NFR1 (PROPOSED from 12 Oct research): mAP@0.5 >= 0.90 and F1 >= 0.90; stretch 0.95. Challenge ensembles at 0.94–0.97 are not the bar.
 
 ### 5.5 Project Limitations/Scope (WHAT it is not capable of doing)
 
 Staff: mid-sem content corrected and updated. Keep in-scope brief; spend words on changes.
-Not capable of (PROPOSED list): more than one species per image (stretch); human vs animal origin; clinical diagnosis; mobile app; live video; lab information system integration.
+Not capable of (PROPOSED list): human vs animal origin; clinical diagnosis; mobile app; live video; lab information system integration.
+Validated-scope line (PROPOSED wording): "Mixed-species images are detected, but their accuracy is not separately validated in Semester 1; a curated mixed-image evaluation subset is a stretch goal." Do NOT write "the model can only detect one species per image": every candidate detector predicts a class per box, and the Chula benchmark already includes mixed images. This wording still satisfies the supervisor's October ruling; confirm at the wrap-up.
 Limitations outside control: trained on Chula faecal smears, not field soil/stool; Colab compute; no guaranteed collaborator images; batch storage limits unknown.
 Assumption worth stating (only one): Chula images are representative enough to be useful on lab images.
 If organisation model adopted thin: full multi-organisation support listed out of scope with rationale (single-lab deployment is the collaboration context).
@@ -185,19 +187,15 @@ If organisation model adopted thin: full multi-organisation support listed out o
 
 ### 5.8 Project risk analysis (WHAT may occur, HOW it affects progress, WHAT to do)
 
-Risk register, high/medium/low likelihood and impact, columns: risk, effect on progress, avoid, recover.
-PROPOSED risks:
+Staff (11 Oct): if the register is long, speak to the top 3 and say they are the top 3 of the full set. Columns stay: risk, effect on progress, avoid, recover. High/medium/low is enough.
 
-1. Model below target on Chula.
-2. Domain gap to real lab or field images.
-3. Colab compute or quota limits.
-4. Batch storage and processing cost unknown.
-5. Data loss in format conversion.
-6. Supervisor feature requests growing scope.
-7. Team availability (internships, tests).
-8. Supervisor absence 25 Oct to 7 Nov.
-9. AI and web streams integrate late.
-10. Dependence on the two AI engineers.
+Spoken slide (PROPOSED), introduced as the top 3:
+
+1. Look-alike species pull per-class accuracy under target (Capillaria hardest; blurred Ascaris vs H. nana). Effect: the detection milestone and batch counts slip. Avoid: per-class metrics, mosaic augmentation. Recover: low-confidence boxes stay visible for the senior to correct.
+2. Domain gap: a model that passes the Chula target can still fail on collaborator lab images. Effect: the tool does not help the actual user this year. Avoid: do not claim field performance in Semester 1. Recover: hold any collaborator images for a later check; senior review stays the control.
+3. Scope growth from supervisor or collaborator requests (batch upload and roles already arrived after mid-sem). Effect: the five-person plan thins out. Avoid: per-feature checklist; stretch stays stretch. Recover: justified changes are logged, not hidden.
+
+Held for Q&A, not spoken: Colab quota, conversion data loss, batch storage still unknown, team availability, supervisor away 25 Oct to 7 Nov, late AI/web integration, dependence on the two AI engineers.
 
 
 
@@ -216,10 +214,12 @@ Anticipated issues: lower availability next semester; supervisor away during rep
 1. NFR1 accuracy target: PROPOSED mAP@0.5 >= 0.90 and F1 >= 0.90 (stretch 0.95). Awaiting team/supervisor.
 2. Requirements: keep/cut/reword rows; review queue in or out; missed-egg box drawing in or out; batch cap.
 3. Owners per requirement correct?
-4. Goals: fold into requirements slide or separate slide.
-5. Section 2: "changed since mid-sem" panel or not.
+4. Goals line wording (target and date). Separate SMART slide is closed: staff left it optional, and 14 minutes does not fit one.
+5. Section 2: one "what changed" line, not a replay. Scored points are restated (staff, 12 Oct: the panel may not remember mid-sem).
 6. Final speaker split.
 7. Organisation / manager tier: parked (section 7).
+8. Multi-species wording (FR3, 5.5, spoken risk 1) applied 12 Oct per research; confirm with supervisor at wrap-up that "detected but not separately validated" is acceptable under the October ruling.
+9. YOLO26 + RF-DETR Small as the two trained models: confirm YOLO26 with supervisor (kickoff list was v8 to v12).
 
 
 

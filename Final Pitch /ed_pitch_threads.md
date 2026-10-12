@@ -1,8 +1,8 @@
 # Pitch-Related Threads Extract
 
-Extracted from: fit3161-fit3163-mum-s2-2026.csv
-Total threads with pitch-related content: 82
-- Final Pitch threads: 11
+Extracted from: fit3161-fit3163-mum-s2-2026.csv. Threads added 12 Oct (Project Risk, Project Risks, Mid-sem vs final, and the SMART goals reply) came from a live edscrape pull, not that CSV.
+Total threads with pitch-related content: 85
+- Final Pitch threads: 14
 - Mid-Semester Pitch threads: 14
 - Other Pitch-Adjacent threads: 57
 
@@ -286,7 +286,7 @@ Nothing
 **Thread ID:** 3635420
 **Category:** General
 **Created:** 2026-10-11T20:11:59.194385+11:00
-**Posts in thread:** 1
+**Posts in thread:** 2
 
 #### Original Post
 **Author:** Anonymous (unknown)
@@ -295,6 +295,90 @@ Nothing
 Hi teaching team,
 
 Do we still need to talk about the SMART goals in the final presentation?
+
+#### Comment/Reply (depth: 1)
+**Author:** Soo Wooi King (staff)
+**Posted:** 2026-10-11T20:49:28.071741+11:00
+**[STAFF ANSWER]**
+
+Depends on how you view them and how you want to present them
+
+
+### Project Risk
+
+**Thread ID:** 3631195
+**Category:** General
+**Created:** 2026-10-09T15:15:54.03666+11:00
+**Posts in thread:** 2
+
+#### Original Post
+**Author:** Anonymous (unknown)
+**Posted:** 2026-10-09T15:15:54.03666+11:00
+
+Hi,
+
+I would like to ask for project risk, what scope are we looking at? Are we looking more of the internal risks like (Teammate unable to finish task on time, Incorrect GitHub Usage etc. ) or the overall risks of the project (Data Leakage etc.)  where we are looking at what potential risks does this project produce
+
+Thank you.
+
+#### Comment/Reply (depth: 1)
+**Author:** Soo Wooi King (staff)
+**Posted:** 2026-10-09T16:20:47.785645+11:00
+**[STAFF ANSWER]**
+
+All the risks you think your project would/could encounter
+
+
+### Project Risks
+
+**Thread ID:** 3635461
+**Category:** General
+**Created:** 2026-10-11T20:36:22.447737+11:00
+**Posts in thread:** 2
+
+#### Original Post
+**Author:** Anonymous (unknown)
+**Posted:** 2026-10-11T20:36:22.447737+11:00
+
+Hi teaching team,
+
+Following up on #293, does that mean that all the types they mentioned in their post are valid?
+
+Also, since there might have been many many risks identified, I'm assuming we just need to talk about the top risks during the presentation? Especially the ones that are unique to our topic.
+
+Finally, is there anything that would be important to talk about regarding risks other than those we identified, their impact, and how we will mitigate them?
+
+Thanks in advance!
+
+#### Comment/Reply (depth: 1)
+**Author:** Soo Wooi King (staff)
+**Posted:** 2026-10-11T20:49:11.885455+11:00
+**[STAFF ANSWER]**
+
+Focus on top 3 of anything if you find you have a lot of them, e.g. top 3 risks are blablabla out of total risks that we have found.
+
+
+### Mid-sem presentation vs final presentation
+
+**Thread ID:** 3635956
+**Category:** General
+**Created:** 2026-10-12T04:11:19.92851+11:00
+**Posts in thread:** 2
+
+#### Original Post
+**Author:** Anonymous (unknown)
+**Posted:** 2026-10-12T04:11:19.92851+11:00
+
+Dear teaching team,
+
+I'm wondering if we should acknowledge our presentation in med-sem in some way during our final presentation? Or should we present as if the final presentation is our first ever presentation? As an example, if we've already explained a certain point in our previous presentation before, should we repeat it again?
+
+#### Comment/Reply (depth: 1)
+**Author:** Soo Wooi King (staff)
+**Posted:** 2026-10-12T10:22:46.896076+11:00
+**[STAFF ANSWER]**
+
+Your choice really...since this is a followup of the mid sem you may reference the earlier presentation but risk us not remembering what you have said/presented.
 
 
 ---

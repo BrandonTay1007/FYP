@@ -123,3 +123,45 @@ Say in the pitch: "We train YOLO26 as the deployable CPU-friendly detector and R
 - DEIMv2 GitHub: https://github.com/Intellindust-AI-Lab/DEIMv2
 - D-FINE GitHub: https://github.com/Peterande/D-FINE
 - Ultralytics RT-DETRv2 vs YOLO11: https://docs.ultralytics.com/compare/rtdetr-vs-yolo11
+
+---
+
+## Addendum (12 Oct 2026): multi-species detection per image
+
+Question: is multi-species detection per image a real stretch goal, or does the detector already do it?
+
+### The model already does it
+- Every detector considered (YOLO26, YOLO11, RF-DETR) predicts a class per box, not per image. Multi-class, multi-instance output is the default behaviour. There is no architectural change needed for two species in one image.
+- Victor's test at Meeting 4 showed exactly this: several objects in one image, each with its own confidence.
+- "Single species per image" is therefore a product and evaluation decision, not a model capability. If the UI shows one image-level label, that is a choice to collapse per-box labels (e.g. majority or highest-confidence class). The boxes underneath still carry individual species.
+
+### Evidence that mixed images work
+- Chula-ParasiteEgg-11 training images each contain one species (1,000 per class), but the ICIP 2022 test set deliberately includes images with two or more egg types. Top teams still scored F1 0.99 on it. Mixed images are part of what the 0.94 mIoU benchmark already covers (Anantrasirichai et al. 2022).
+- Ultralytics mosaic augmentation is on by default (mosaic=1.0, switched off for the last 10 epochs). It stitches four random training images into one, so the model trains on synthetic multi-species scenes automatically even though the raw Chula images are single-species. Mohammed et al. 2025 used the same idea on purpose (2x3 montages) to improve out-of-distribution generalisation.
+- Frontiers in Microbiology 2024 (YOLOv4, 9 helminth species, 2,083 images): single-species mAP 85 to 100%; mixed smears with two species scored 93 to 98%, three species 91 to 95%, with one two-species group dropping to 75%. Overall 94.4%. So mixed images cost a few points, mainly where species look alike.
+- Mohammed et al. 2025 (PLOS NTD, YOLOv7 variants, STH + S. mansoni on Kato-Katz): in-distribution F1 97.5% on multi-class smears.
+
+### Where accuracy actually drops
+1. Class confusion between look-alike eggs, not the presence of two species as such. Chula's hardest pairs: Capillaria philippinensis (lowest mIoU 0.77) and blurred Ascaris vs Hymenolepis nana (highest miss rates).
+2. Threshold filtering: a second species with lower confidence disappears below the slider. The team's Meeting 4 concern ("labels only show above the confidence threshold") is this. It is a UI issue; the fix is showing low-confidence boxes greyed out or the review queue surfacing them, not a model change.
+3. NMS suppression: with per-class NMS (Ultralytics default) two overlapping eggs of different species both survive; with class-agnostic NMS one is deleted. YOLO26's NMS-free head and RF-DETR's set prediction remove this issue entirely.
+4. Co-occurrence bias: training on single-species images could teach the model that an image has one class. Mosaic largely removes this. Copy-paste augmentation (copy_paste argument) can add more mixed scenes if needed.
+
+### What "single species per image" should mean in the proposal
+- Baseline (what we commit to): per-box species labels from the detector; the case record and batch report count eggs per species per image. Evaluation reported on the standard Chula test split, which already contains mixed images.
+- Stretch (what we do not promise): a measured multi-species accuracy figure on a curated mixed-image subset, plus UI treatment of mixed cases (e.g. flagging an image as mixed for senior review).
+- Do NOT describe the limitation as "the model can only detect one species per image". That is false and a marker who knows detectors will catch it. Describe it as "we evaluate and report per-species counts; mixed-species accuracy is not separately validated this semester".
+
+### Recommendation
+Reword the requirement and the limitation:
+- FR3: "Detect eggs and return a bounding box, species label and confidence for every egg in the image" (drop "one species per image").
+- Scope: "Mixed-species images are detected but their accuracy is not separately validated in Semester 1; a mixed-image evaluation subset is a stretch goal."
+- Risk register: "Look-alike species confusion (Capillaria, blurred Ascaris vs H. nana) lowers per-species accuracy; mitigation: per-class metrics, review queue surfaces low-confidence boxes, senior correction."
+Confirm wording with the supervisor at the wrap-up, since the October ruling said "single species is acceptable", which the above still satisfies.
+
+### Sources
+- Anantrasirichai et al. 2022 (test set contains multi-type images): https://arxiv.org/abs/2208.06063
+- Ultralytics train arguments (mosaic default 1.0, close_mosaic 10, copy_paste): https://docs.ultralytics.com/modes/train/
+- Mohammed et al. 2025, PLOS NTD, YOLOv7 variants with montage augmentation: https://journals.plos.org/plosntds/article?id=10.1371/journal.pntd.0013234
+- Frontiers in Microbiology 2024, YOLOv4 single vs mixed smears: https://pmc.ncbi.nlm.nih.gov/articles/PMC11614813/
+- Oyibo et al. 2025, multiclass STH + S. mansoni detection: https://www.nature.com/articles/s41598-025-02755-9
