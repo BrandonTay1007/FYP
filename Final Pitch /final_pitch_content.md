@@ -18,6 +18,8 @@ Legend: **AGREED** = confirmed by user/team/supervisor. **PROPOSED** = agent sug
 - Supervisor availability: Week 12 wrap-up Thu 4:00-4:30pm online. Away 25 Oct to 7 Nov. No Fridays.
 - Proposal report (separate assessment): due Mon 2 Nov 2026 11:55pm, 3500 words, edit-logged Google Doc, authorship statement or -50%.
 
+
+
 ## 1. Teaching-team rulings (Ed, Soo Wooi King, 29 Sep to 11 Oct)
 
 - Content follows the nine-item MUM flow. Not all items must be present.
@@ -35,6 +37,8 @@ Legend: **AGREED** = confirmed by user/team/supervisor. **PROPOSED** = agent sug
 - Conclusion: reflection on progress thus far, teamwork and PM.
 - SMART goals: question asked 11 Oct, unanswered.
 
+
+
 ## 2. Supervisor rulings (Dr Sicily)
 
 Kickoff 31 Aug: Chula-ParasiteEgg-11 primary (11 species), AI-KFM comparison only. Train YOLOv8-v12 or Faster R-CNN. Motivation is Orang Asli One Health collaboration (Dr Azdayanti, Assoc. Prof. Ogawa). Do not claim host-origin (human vs animal) classification. Screening support, not diagnosis.
@@ -44,6 +48,7 @@ Kickoff 31 Aug: Chula-ParasiteEgg-11 primary (11 species), AI-KFM comparison onl
 Meeting 3 feedback (17 Sep): build detection pipeline first (highest risk). Basic authentication with case ownership. Produce an architecture plan before implementation.
 
 Early Oct meeting (Notion "Supervisor questions", user-confirmed):
+
 - One species per image acceptable. Multi-species per image is stretch.
 - 70% target looks weak; a benchmark on the dataset reportedly ~97%. Compare F1 across papers and Kaggle, not accuracy alone.
 - Support multiple formats (PNG, TIFF). Backend converts and resizes. Test for data loss.
@@ -58,16 +63,19 @@ Meeting 4 team decisions (9 Oct): single-image detection baseline, multi-species
 
 User confirmations 11 Oct: batch upload and junior/senior roles are IN scope. No model results yet (cite papers). No tech stack chosen. RTM not signed off (no MUM RTM sign-off exists).
 
+12 Oct model research (PROPOSED, `model_selection_research.md`): YOLO26 small as the deployable detector; RF-DETR Small as the CNN-vs-transformer comparison (domain-transfer evidence). YOLO11 only if RF-DETR is too slow on Colab. Confirm YOLO26 with supervisor (kickoff named v8–v12).
+
 ## 3. Mid-sem lessons to fix
 
-Team marks D, D, D. Individual (Brandon): HD fluency, HD content, HD Q&A, D conduct.
+Team marks: Pitch content D, Visual communication D, Presentation structure and flow D.
+
 - Slide text too small, slides too wordy.
 - Exceeded time by a bit.
 - Non-presenters moved around and distracted.
 - Dress appropriately.
 - Wrong handover between speakers; needed more practice.
-- Brandon: watch volume (borderline shouting), look at screen less.
-- Pitch feedback: deployment overlapped integration testing with no buffer. Fix in Gantt.
+
+Pitch feedback: deployment overlapped integration testing with no buffer. Fix in Gantt.
 
 Mid-sem presenters: Yu Hong intro and problem; Wei Yong overview, users, conclusion; Yee Yang requirements and WSM; Zhi Hong SMART goals; Joshua scope, limits, schedule.
 Mid-sem deck facts: WSM compared models, YOLO chosen; FR1-FR9 plus NFR >=70% mAP; 3 SMART goals (G1 detection >=70% mAP by Sem1 Wk10; G2 correction and accuracy Sem2 Wk8; G3 case dashboard Sem2 Wk6); open items were YOLO version benchmark, web vs mobile, RBAC gap.
@@ -80,18 +88,25 @@ Dev roles: Zhi Hong + Joshua full-stack and test. Yu Hong + Victor AI engineers.
 
 ---
 
+
+
 ## 5. Content by MUM section
 
 Target timing (PROPOSED): roughly 14 min = intro 0:45, problem/overview 1:30, users 1:00, requirements 2:30, scope 1:00, plan 1:15, design 2:00, risk 1:00, conclusion 1:00, buffer 2:00.
 
 ### 5.1 Intro material (as per mid-sem pitch)
+
 - Title slide: project name, PCS-33, topic 44, five names and IDs.
 - Team introduction slide reused from mid-sem (Meeting 2 fix: give context before diving in).
 - One sentence: ParaShot turns a microscope photo into a reviewed, exportable case.
 
+
+
 ### 5.2 Problem/Opportunity leading to overview and deliverables (WHY it exists, WHAT it solves)
+
 AGREED basis (mid-sem merged statement): identification by eye, scarce expertise, reader variability, no traceable record. Citations: Capuozzo et al. 2024, Keller et al. 2020, Mohammed et al. 2025, Stuyver and Levecke 2021.
 PROPOSED additions:
+
 - Field reality: a field trip returns hundreds of images; the expert is the review bottleneck.
 - What it solves: drafts boxes and species so the expert reviews rather than searches; every image becomes a case; a batch gets one report.
 - Overview workflow: upload batch -> standardise images -> detect (one species per image) -> senior review and correct -> save cases -> batch report.
@@ -99,30 +114,37 @@ PROPOSED additions:
 - OPEN: include a short "changed since mid-sem" panel (batch, roles, report as headline)? Own slide or panel.
 - Positioning clause: screening support, not diagnosis, not host-origin classification.
 
+
+
 ### 5.3 Target end users (WHO will use it)
+
 AGREED (supervisor Oct): junior uploads and views; senior corrects, labels, flags, approves, exports.
 Stakeholders not at the keyboard: Dr Azdayanti (UiT parasitology), Assoc. Prof. Ogawa (JCSMHS), Dr Sicily (supervisor). Not users: patients, communities, clinicians making diagnoses.
 PARKED: manager tier / organisation model (see section 7 below).
 
 ### 5.4 Project Requirements/Goals (WHAT it is expected to do, finalised for now)
+
 Rule: finalised list only. No ranking, RTM or WSM. Must be substantial enough to need all five members, so include an owner column (PROPOSED).
 
 Draft functional requirements (PROPOSED, owners follow Meeting 4 roles):
 
-| ID | Requirement | Owner | vs mid-sem |
-|---|---|---|---|
-| FR1 | Upload one or many microscopy images (PNG, TIFF, JPEG) up to a batch cap | Full-stack (Zhi Hong, Joshua) | Changed: batch added |
-| FR2 | Convert and resize uploads to one standard format, verified for no data loss | Full-stack + Brandon | New (supervisor) |
-| FR3 | Detect eggs: boxes, one species label per image, confidence | AI (Yu Hong, Victor) | Changed: one species per image |
-| FR4 | Adjustable confidence threshold with re-run on the same image | AI + Full-stack | Unchanged |
-| FR5 | Senior can relabel, delete a box, flag uncertain, add note | Full-stack | Unchanged, now senior-only |
-| FR6 | Login with junior and senior roles; cases owned by uploader | Full-stack | New (supervisor) |
-| FR7 | Case history: every image is a case, grouped by batch | Full-stack + Brandon | Changed: batch grouping |
-| FR8 | Batch report: species and egg counts across all images, exportable | Brandon + Full-stack | New, headline feature |
-| FR9 | Agreement summary: model vs senior corrections, per species | AI + Brandon | Changed: was accuracy summary |
+
+| ID  | Requirement                                                                  | Owner                         | vs mid-sem                     |
+| --- | ---------------------------------------------------------------------------- | ----------------------------- | ------------------------------ |
+| FR1 | Upload one or many microscopy images (PNG, TIFF, JPEG) up to a batch cap     | Full-stack (Zhi Hong, Joshua) | Changed: batch added           |
+| FR2 | Convert and resize uploads to one standard format, verified for no data loss | Full-stack + Brandon          | New (supervisor)               |
+| FR3 | Detect eggs: boxes, one species label per image, confidence                  | AI (Yu Hong, Victor)          | Changed: one species per image |
+| FR4 | Adjustable confidence threshold with re-run on the same image                | AI + Full-stack               | Unchanged                      |
+| FR5 | Senior can relabel, delete a box, flag uncertain, add note                   | Full-stack                    | Unchanged, now senior-only     |
+| FR6 | Login with junior and senior roles; cases owned by uploader                  | Full-stack                    | New (supervisor)               |
+| FR7 | Case history: every image is a case, grouped by batch                        | Full-stack + Brandon          | Changed: batch grouping        |
+| FR8 | Batch report: species and egg counts across all images, exportable           | Brandon + Full-stack          | New, headline feature          |
+| FR9 | Agreement summary: model vs senior corrections, per species                  | AI + Brandon                  | Changed: was accuracy summary  |
+
 
 Draft non-functional (PROPOSED):
-- NFR1 detection quality on a held-out Chula split; target TBD from published results (70% rejected by supervisor).
+
+- NFR1 detection quality on a held-out Chula split, single model, no ensemble: mAP@0.5 >= 0.90 and F1 >= 0.90 (stretch 0.95). Field-image performance is not this semester's target (Heliyon 2024: F1 0.88 → 0.53 out of domain).
 - NFR2 batch processing within a stated time per image on CPU; GPU optional.
 - NFR3 role security: juniors cannot change labels or access admin functions.
 - NFR4 conversion lossless, or loss measured and reported.
@@ -133,9 +155,10 @@ Goals: SMART unanswered on Ed. PROPOSED: fold revised goals into this slide as a
 Deliberately left out (OPEN to re-add): lowest-confidence-first review queue (agent idea, not supervisor's); senior drawing boxes for missed eggs (never raised with supervisor); manager tier (parked).
 
 OPEN: batch cap number, or "to be set after storage research due 22 Oct".
-OPEN: NFR1 target. Needs research of F1/mAP on Chula-ParasiteEgg-11 (ICIP 2022 challenge and follow-ups).
+NFR1 (PROPOSED from 12 Oct research): mAP@0.5 >= 0.90 and F1 >= 0.90; stretch 0.95. Challenge ensembles at 0.94–0.97 are not the bar.
 
 ### 5.5 Project Limitations/Scope (WHAT it is not capable of doing)
+
 Staff: mid-sem content corrected and updated. Keep in-scope brief; spend words on changes.
 Not capable of (PROPOSED list): more than one species per image (stretch); human vs animal origin; clinical diagnosis; mobile app; live video; lab information system integration.
 Limitations outside control: trained on Chula faecal smears, not field soil/stool; Colab compute; no guaranteed collaborator images; batch storage limits unknown.
@@ -143,20 +166,28 @@ Assumption worth stating (only one): Chula images are representative enough to b
 If organisation model adopted thin: full multi-organisation support listed out of scope with rationale (single-lab deployment is the collaboration context).
 
 ### 5.6 Project Plan (HOW executed, WHEN delivered)
+
 - Gantt only, two semesters, milestones marked. No WBS, no methodology, no testing slide.
 - Fixes to state out loud: deployment has its own window instead of overlapping integration testing, with fallback if pipeline slips; model training moved from Sem 1 Week 10 to the semester break (AI engineers start then).
 - Sequence stays risk-ordered: detection pipeline first.
 
+
+
 ### 5.7 Project design (UI wireframe minimum, plus other design if needed)
+
 - Low-fidelity wireframes as a template: one layout shell, then login, batch upload, batch overview, single-image review with overlay and correction panel, case history, report preview.
 - Walk as a story: junior uploads, senior reviews, report goes out.
-- Additional: one architecture diagram (browser, API, inference service, case database, image storage). Candidate technologies named as "candidate, not committed".
+- Additional: one architecture diagram (browser, API, inference service, case database, image storage). Candidate technologies named as "candidate, not committed": YOLO26 (deployable, CPU-friendly) and RF-DETR Small (transformer comparison).
 - Optional: one pipeline diagram (upload -> convert and resize -> detect -> threshold -> store -> review -> report).
 - If manager tier adopted: one admin screen.
 
+
+
 ### 5.8 Project risk analysis (WHAT may occur, HOW it affects progress, WHAT to do)
+
 Risk register, high/medium/low likelihood and impact, columns: risk, effect on progress, avoid, recover.
 PROPOSED risks:
+
 1. Model below target on Chula.
 2. Domain gap to real lab or field images.
 3. Colab compute or quota limits.
@@ -168,22 +199,29 @@ PROPOSED risks:
 9. AI and web streams integrate late.
 10. Dependence on the two AI engineers.
 
+
+
 ### 5.9 Conclusion (teamwork and PM lessons; anticipated team and management issues, NOT project risks)
+
 Teamwork, with evidence: mid-sem overtime and wrong handover -> committed to online plus 2-3 hour physical rehearsal; rotating chair and minute-taker keeps everyone active.
 Project management, with evidence: deployment-overlap feedback -> Gantt revised; role poll replaced on-the-spot assignment; training slip replanned, not hidden; per-feature checklist adopted.
 Anticipated issues: lower availability next semester; supervisor away during report writing; two parallel streams drifting without the shared checklist.
 
 ---
 
+
+
 ## 6. Open decisions
 
-1. NFR1 accuracy target: research published F1/mAP on Chula and propose a number with basis.
+1. NFR1 accuracy target: PROPOSED mAP@0.5 >= 0.90 and F1 >= 0.90 (stretch 0.95). Awaiting team/supervisor.
 2. Requirements: keep/cut/reword rows; review queue in or out; missed-egg box drawing in or out; batch cap.
 3. Owners per requirement correct?
 4. Goals: fold into requirements slide or separate slide.
 5. Section 2: "changed since mid-sem" panel or not.
 6. Final speaker split.
 7. Organisation / manager tier: parked (section 7).
+
+
 
 ## 7. Parked: organisation and manager tier
 
@@ -194,10 +232,12 @@ Status: PARKED by user on 12 Oct. Focus on main content first.
 
 ## 8. Sources
 
+- Final Pitch / model_selection_research.md (YOLO26 + RF-DETR, NFR1 numbers)
 - Final Pitch / teaching_team_clarification.md (the backbone)
 - Final Pitch / Marking Rubric v260915 (weights: fluency 20, content 20, Q&A 5, conduct 5, pitch content 30, visual 5, structure 15; HD needs depth beyond meeting requirements)
 - Ed export fit3161-fit3163-mum-s2-2026.csv and Final Pitch / ed_pitch_threads.md
 - Mid_semester_pitch / teaching_team_team_feedback.md and general feedback
 - Meeting Minutes / Meeting1-4 (treat details with care; confirm odd items)
-- ParaShot_Pitch_Handover.md and cursor.md (Sep; superseded by Canva deck and Oct supervisor meeting where they conflict)
+- ParaShot_Pitch_Handover.md (Sep; superseded by Canva deck and Oct supervisor meeting where they conflict)
 - Notion: FYP hub and "Supervisor questions" page (in trash, still readable)
+

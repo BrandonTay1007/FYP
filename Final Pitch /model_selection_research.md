@@ -4,7 +4,7 @@ Date: 12 Oct 2026. Question: which detector should we train on Chula-ParasiteEgg
 
 ## Recommendation (short)
 
-Stay with YOLO. Train **Ultralytics YOLO26** (small, then compare nano) as the primary model, with **YOLO11** as the drop-in fallback. Do not use YOLO12 or YOLO13. Do not switch to Faster R-CNN or a DETR-family model as the main detector.
+Stay with YOLO as the deployable detector. Train **Ultralytics YOLO26** (small, then compare nano) as the primary model, with **RF-DETR Small** as the transformer comparison (keep YOLO11 only if RF-DETR is too slow on Colab). Do not use YOLO12 or YOLO13. Do not switch to Faster R-CNN as the main detector.
 
 ## Evidence
 
@@ -85,3 +85,41 @@ Justification: published single-model YOLO results on this dataset sit between 0
 - YOLO26 vs YOLO11: https://docs.ultralytics.com/compare/yolo26-vs-yolo11/
 - YOLO26 model page: https://docs.ultralytics.com/models/yolo26/
 - YOLO12 model page (not recommended note): https://docs.ultralytics.com/models/yolo12/
+
+---
+
+## Addendum (12 Oct 2026): non-YOLO detectors that beat YOLO on benchmarks
+
+Question: is anything better than YOLO? Short answer: on COCO and on domain-transfer benchmarks, yes. On Chula-ParasiteEgg-11 specifically, nothing published, and single YOLOs are already at 0.96 to 0.99 mAP@0.5, so the ceiling is close. The candidates below win on generalisation to new domains, which is the collaboration's real problem (field images), not this semester's measured task.
+
+### Candidates
+
+| Model | Who / when | COCO AP (small-ish tier) | Params | Licence | Trainable on Colab T4 | Dataset format | CPU inference | Microscopy evidence |
+|---|---|---|---|---|---|---|---|---|
+| RF-DETR | Roboflow, ICLR 2026 | Nano 48.4 @ 2.3 ms; Small 53.0 @ 3.5 ms; Medium 54.7 @ 4.5 ms; 2XL 60.1 (first real-time past 60) | ~30M every tier (DINOv2 backbone; Atto to Pico are paid "plus" tier) | Apache 2.0 (Nano to Large) | Yes: docs say 8 GB VRAM, Colab notebook, batch_size="auto", early stopping | COCO JSON or YOLO txt, auto-detected | ONNX export works on CPU but Roboflow itself says YOLO26 is the practical CPU choice | Urine microscopy 2025 (PMC12267851): RF-DETR 0.871 vs YOLOv8 0.802 mAP@0.5, p=0.003. No parasite-egg paper yet |
+| DEIMv2 | Intellindust, 2025 | S 50.9 @ 5.8 ms (first <10M model over 50 AP); N 43.0; Pico 38.5 | S 9.7M; N 3.6M | Custom "DEIMv2 License", commercial via Intellindust | Recipes assume 4 GPUs; single-GPU fine-tune possible but undocumented | COCO JSON | Not documented | None found |
+| D-FINE | 2024/2025 | N 42.8; S 48.5; M 52.3 | N 4M; S 10M | Apache 2.0 | 4-GPU recipes; single-GPU possible | COCO JSON | Not documented | None found. RF-DETR nano beats D-FINE nano by 5.3 AP |
+| RT-DETRv2 | Baidu, in Ultralytics | comparable to YOLO11 at higher cost | large | Apache 2.0 | Heavier CUDA memory and longer training (Ultralytics' own comparison page) | Ultralytics YAML | Slow | DT4PEIS used a DETR on Chula, numbers paywalled |
+
+RF100-VL domain-transfer benchmark (Roboflow): RF-DETR Nano 57.1, Small 59.6, Medium 60.6 mAP50:95. Roboflow states YOLO architectures "consistently underperform" on out-of-distribution datasets and that scaling YOLO up does not fix it. This is Roboflow's own benchmark, so treat it as credible but interested.
+
+### What this means for ParaShot
+- For the in-distribution Chula number, YOLO26 or YOLO11 will reach the target. A transformer will not meaningfully beat 0.96 to 0.99 mAP@0.5.
+- For the collaboration's real problem (Dr Azdayanti's field or lab images, Heliyon 2024 showed F1 falling from 0.88 to 0.53 out of domain), RF-DETR's DINOv2 features are the most plausible single-model improvement. That is a Part 2 or stretch question, not a Sem 1 target.
+- CPU cost: supervisor said CPU is fine for single image. RF-DETR at ~30M params is not a CPU model. If RF-DETR is used, inference needs a GPU or a slower path.
+
+### Updated recommendation
+Primary: YOLO26 small (unchanged). Comparison model: **RF-DETR Small instead of YOLO11**. Reasons: same YOLO-format dataset so zero relabelling; Colab-trainable; Apache 2.0; gives the report a real CNN-versus-transformer comparison rather than two YOLOs; and it is the one model with evidence of better domain transfer, which maps directly onto the collaboration's motivation. Keep YOLO11 only if RF-DETR training proves too slow on the free tier.
+
+Say in the pitch: "We train YOLO26 as the deployable CPU-friendly detector and RF-DETR as a transformer comparison, chosen for its published domain-transfer advantage." That is a defensible, evidence-backed answer to "why YOLO" in Q&A.
+
+### Additional sources
+- RF-DETR GitHub: https://github.com/roboflow/rf-detr
+- RF-DETR paper (ICLR 2026): https://arxiv.org/abs/2511.09554
+- RF-DETR docs (training, export, 8 GB VRAM): https://rfdetr.roboflow.com/latest/
+- Roboflow RF-DETR vs YOLO: https://roboflow.com/blog/rf-detr-vs-yolo
+- Roboflow RF-DETR Nano/Small/Medium release: https://roboflow.com/blog/rf-detr-nano-small-medium
+- RF-DETR urine microscopy, 2025: https://pmc.ncbi.nlm.nih.gov/articles/PMC12267851/
+- DEIMv2 GitHub: https://github.com/Intellindust-AI-Lab/DEIMv2
+- D-FINE GitHub: https://github.com/Peterande/D-FINE
+- Ultralytics RT-DETRv2 vs YOLO11: https://docs.ultralytics.com/compare/rtdetr-vs-yolo11
